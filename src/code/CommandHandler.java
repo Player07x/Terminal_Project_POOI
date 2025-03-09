@@ -5,8 +5,8 @@ package code;
     X LS → LISTA OS ARQUIVOS E DIRETÓRIOS DO DIRETÓRIO ATUAL.
     X CD <DIRETÓRIO> → NAVEGA ENTRE DIRETÓRIOS.
     X MKDIR <NOME> → CRIA UM NOVO DIRETÓRIO.
-    TOUCH <ARQUIVO> → CRIA UM NOVO ARQUIVO VAZIO.
-    RM <ARQUIVO/DIRETÓRIO> → REMOVE UM ARQUIVO OU DIRETÓRIO.
+    X TOUCH <ARQUIVO> → CRIA UM NOVO ARQUIVO VAZIO.
+    X RM <ARQUIVO/DIRETÓRIO> → REMOVE UM ARQUIVO OU DIRETÓRIO.
     CAT <ARQUIVO> → EXIBE O CONTEÚDO DE UM ARQUIVO.
     ECHO <TEXTO> > <ARQUIVO> → ESCREVE TEXTO EM UM ARQUIVO.
     HISTORY → MOSTRA O HISTÓRICO DE COMANDOS DIGITADOS.
@@ -14,61 +14,64 @@ package code;
  */
 
 import java.util.Objects;
-import java.util.Scanner;
 
 // GERENCIADOR DE COMANDOS
 public class CommandHandler {
 
-    public static String[] arguments = null;
-    public static String output = null;
+    public String[] arguments = null;
+    public String output = null;
+    public DirectoryManager dm;
+    public FileManager fm;
 
+    public CommandHandler(DirectoryManager dm, FileManager fm) {
+        this.dm = dm;
+        this.fm = fm;
+    }
 
-    public static Runnable pwd() {
-        output = DirectoryManager.actualDir + "\n";
+    public void pwd() {
+        output = dm.actualDir + "\n";
         System.out.println(output);
 
 
-        return null;
     }
 
-    public static Runnable ls() {
+    public void ls() {
 
-        for (String file : DirectoryManager.getActualItens()) {
+        for (String file : dm.getActualItens()) {
             System.out.println(file);
         }
 
         System.out.println();
 
-        return null;
     }
 
 
     // CD <DIRETÓRIO> → NAVEGA ENTRE DIRETÓRIOS
-    public static Runnable cd() {
+    public void cd() {
 
         // Se existe argumentos
         if (arguments.length > 1) {
 
             // Se for um retorno (../), então encerra essa função
-            if (DirectoryManager.returnDir(arguments[1])) {
-                return null;
+            if (dm.returnDir(arguments[1])) {
+                return;
             }
 
             // Valida se o caminho é válido
             arguments[1] = ErrorManager.pathValidator(arguments[1]);
             String dir = !Objects.equals(arguments[1], "") ?
-                    DirectoryManager.actualDir + "\\" + arguments[1] : DirectoryManager.actualDir;
+                    dm.actualDir + "\\" + arguments[1] : dm.actualDir;
 
             // Verifica se o diretório existe e é relativo
-            if (DirectoryManager.dirExist(dir)) {
-                DirectoryManager.actualDir = dir;
-                DirectoryManager.fixRealDir();
+            if (dm.dirExist(dir)) {
+                dm.actualDir = dir;
+                dm.fixRealDir();
 
             }
             // Verifica se o diretório existe e é absoluto
-            else if (DirectoryManager.dirExist(arguments[1])) {
-                DirectoryManager.actualDir = arguments[1];
-                DirectoryManager.fixRealDir();
+            else if (dm.dirExist(arguments[1])) {
+                dm.actualDir = arguments[1];
+                dm.fixRealDir();
             }
             else {
                 ErrorManager.noPath(); // Mensagem de erro
@@ -76,39 +79,37 @@ public class CommandHandler {
 
 
         } else {
-            System.out.printf(DirectoryManager.actualDir + "\n\n");
+            System.out.printf(dm.actualDir + "\n\n");
         }
 
-        return null;
     }
 
-    public static Runnable mkdir() {
-        DirectoryManager.createFolder(arguments[1]);
+    public void mkdir() {
+        fm.createFolder(arguments[1]);
 
-        return null;
     }
 
-    public static Runnable touch() {
-        return null;
+    public void touch() {
+        fm.createFile(arguments[1]);
+        System.out.println(arguments[1] + "\n");
+
     }
 
-    public static Runnable rm() {
-        return null;
+    public void rm() {
+        fm.deleteFile(arguments[1]);
+
+
     }
 
-    public static Runnable cat() {
-        return null;
+    public void cat() {
     }
 
-    public static Runnable echo() {
-        return null;
+    public void echo() {
     }
 
-    public static Runnable history() {
-        return null;
+    public void history() {
     }
 
-    public static Runnable exit() {
-        return null;
+    public void exit() {
     }
 }

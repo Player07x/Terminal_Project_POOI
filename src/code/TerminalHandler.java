@@ -1,13 +1,16 @@
 package code;
 
-import java.util.Scanner;
-import code.CommandsHash;
+public class TerminalHandler extends CommandsHash {
 
+    CommandHandler ch;
 
-public class TerminalHandler {
+    public TerminalHandler(CommandHandler ch) {
+        super(ch);
+        this.ch = ch;
+    }
 
     // USA O INPUT DO SISTEMA E SEPARA CADA PALAVRA EM UMA STRING
-    public static String[] lineStrip(String comando) {
+    public String[] lineStrip(String comando) {
 
         String regex = "[,\\s]";
 
@@ -16,18 +19,18 @@ public class TerminalHandler {
 
 
     // DETECTA CADA COMANDO E ANALISA QUAL FUNÇÃO CHAMAR, SE NÃO, RETORNA ERRO
-    public static String runCommand(String[] line) {
+    public String runCommand(String[] line) {
 
         // Verifica foi digitado algo na linha
         if (line.length > 0) {
 
             // Verifica se o comando existe
-            if (CommandsHash.commandMap.containsKey(line[0])) {
+            if (this.commandMap.containsKey(line[0])) {
 
-                Runnable command = CommandsHash.commandMap.get(line[0]);
+                Runnable command = this.commandMap.get(line[0]);
                 command.run();
 
-                return CommandHandler.output;
+                return ch.output;
             }
             else if (!line[0].trim().isEmpty()) {
                 return ErrorManager.commandNotIdentify(line[0]);
@@ -36,5 +39,4 @@ public class TerminalHandler {
 
         return "";
     }
-
 }

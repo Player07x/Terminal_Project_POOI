@@ -4,21 +4,26 @@ import java.util.Map;
 
 
 public class CommandsHash {
-    public static Map<String, Runnable> commandMap = new HashMap<>();
+    public Map<String, Runnable> commandMap = new HashMap<>();
+    private final CommandHandler cm;
 
-    static {
-
-        // Cria um hashmap com todos os comandos aceitos
-        commandMap.put("pwd", CommandHandler::pwd);
-        commandMap.put("ls", CommandHandler::ls);
-        commandMap.put("cd", CommandHandler::cd);
-        commandMap.put("mkdir", CommandHandler::mkdir);
-        commandMap.put("touch", CommandHandler::touch);
-        commandMap.put("rm", CommandHandler::rm);
-        commandMap.put("cat", CommandHandler::cat);
-        commandMap.put("echo", CommandHandler::echo);
-        commandMap.put("history", CommandHandler::history);
-        commandMap.put("exit", CommandHandler::exit);
-
+    public CommandsHash(CommandHandler cm) {
+        this.cm = cm;
     }
+
+
+    // Cria um hashmap com todos os comandos aceitos
+    public void initializeCommandMap() {
+        commandMap.put("pwd", cm::pwd);
+        commandMap.put("ls", cm::ls);
+        commandMap.put("cd", cm::cd);
+        commandMap.put("mkdir", cm::mkdir);
+        commandMap.put("touch", cm::touch);
+        commandMap.put("rm", cm::rm);
+        commandMap.put("cat", cm::cat);
+        commandMap.put("echo", cm::echo);
+        commandMap.put("history", cm::history);
+        commandMap.put("exit", cm::exit);
+    }
+
 }

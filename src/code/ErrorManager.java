@@ -46,4 +46,12 @@ public class ErrorManager {
     public static void folderExits(String name) {
         System.out.printf("Já existe uma subpasta ou um arquivo %s.\n\n", name);
     }
+
+    public static void canFind(String path, String actualDir) {
+        System.out.printf("Não foi possível encontrar %s\\%s.\n\n", actualDir,path);
+    }
+
+    public static void sintaxiError() {
+        System.out.println("A sintaxe do comando está incorreta.\n");
+    }
 }

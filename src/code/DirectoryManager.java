@@ -1,36 +1,17 @@
 package code;
 
-import javax.sound.midi.Soundbank;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 // Manipula os diretórios
 public class DirectoryManager {
 
-    public static String actualDir = System.getProperty("user.dir");
-
-
-    // Cria uma pasta
-    public static String createFolder(String name) {
-
-        String dir = actualDir + "\\" + name;
-        if (!DirectoryManager.dirExist(dir)) {
-            File folder = new File(dir);
-            folder.mkdir();
-
-        } else {
-            ErrorManager.folderExits(name);
-        }
-
-        return actualDir;
-    }
-
+    public String actualDir = System.getProperty("user.dir");
 
     // Exibe uma lista de itens dentro de uma pasta
-    public static String[] getActualItens(){
+    public String[] getActualItens(){
 
         File files = new File(actualDir);
         File[] allItens = files.listFiles();
@@ -62,7 +43,7 @@ public class DirectoryManager {
 
 
     // Verifica a existencia de um diretório
-    public static boolean dirExist(String dir) {
+    public boolean dirExist(String dir) {
 
         File file = new File(dir);
 
@@ -71,7 +52,7 @@ public class DirectoryManager {
 
 
     // Corrige a formatação de um PATH
-    public static void fixRealDir() {
+    public void fixRealDir() {
         Path dir = Paths.get(actualDir);
         try {
             actualDir = dir.toRealPath().toString();
@@ -82,7 +63,7 @@ public class DirectoryManager {
 
 
     // Retorna um ou mais diretórios
-    public static boolean returnDir(String command) {
+    public boolean returnDir(String command) {
         int isReturn = 0;
         int isRoot = 0;
         int commandSize = command.length();
@@ -116,7 +97,7 @@ public class DirectoryManager {
         else if (isReturn == commandChar.length) {
 
             // Para cada "." volta um diretório, até o limite do diretório raiz
-            while (isReturn != 2) {
+            while (isReturn != 2 && !Paths.get(actualDir).getRoot().toString().equals(actualDir)) {
 
                 File file = new File(actualDir);
                 File parentFile = file.getParentFile();
@@ -127,10 +108,8 @@ public class DirectoryManager {
                 } else {
                     isReturn = 0;
                 }
-
                 isReturn--;
             }
-
             return true;
         }
         return false;
