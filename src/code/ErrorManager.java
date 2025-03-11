@@ -2,16 +2,21 @@ package code;
 
 public class ErrorManager {
 
+    // Identifica se o comando é válido
     public static String commandNotIdentify(String command) {
 
-        String error =  String.format("'%s' não é reconhecido como um comando interno\n" +
-                "ou externo, um programa operável ou um arquivo em lotes.\n", command);
+        String error =  String.format("""
+                '%s' não é reconhecido como um comando interno
+                ou externo, um programa operável ou um arquivo em lotes.
+                """, command);
 
         System.out.println(error);
 
         return error;
     }
 
+
+    // Erro se o caminho não existe
     public static String noPath() {
         String error = "O sistema não pode encontrar o caminho especificado.\n";
         System.out.println(error);
@@ -19,39 +24,61 @@ public class ErrorManager {
         return error;
     }
 
+
+    // Valida o caminho
     public static String pathValidator(String path) {
         char[] charPath = path.toCharArray();
         int validator = 0;
-        int isReturn = 0;
 
-        for(int i = 0; i < charPath.length; i++) {
-
-            if(charPath[i] == '.' || charPath[i] == '/' || charPath[i] == '\\') {
+        for (char c : charPath) {
+            if (c == '.' || c == '/' || c == '\\') {
                 validator++;
-
-                if (i == 0 && (charPath[i] == '/' || charPath[i] == '\\') ||
-                        (i != 0 && charPath[i] == '.')) {
-                    isReturn++;
-                }
-
             }
         }
-
-        if (isReturn == charPath.length) ;
         if (validator == charPath.length)  path = "";
 
         return path;
     }
 
-    public static void folderExits(String name) {
-        System.out.printf("Já existe uma subpasta ou um arquivo %s.\n\n", name);
+
+    // Retorna um erro por não encontrar um arquivo
+    public static void cantFind(String path, String actualDir) {
+        String error = String.format("Não foi possível encontrar %s\\%s.\n", actualDir,path);
+        System.out.println(error);
+
     }
 
-    public static void canFind(String path, String actualDir) {
-        System.out.printf("Não foi possível encontrar %s\\%s.\n\n", actualDir,path);
+
+    // Retorna um erro por não encontrar uma pasta
+    public static void cantFind(String path) {
+        String error = String.format("Não foi possível encontrar %s.\n", path);
+        System.out.println(error);
+
     }
 
-    public static void sintaxiError() {
-        System.out.println("A sintaxe do comando está incorreta.\n");
+
+    // Retorna um erro de sintaxe
+    public static String sintaxiError() {
+        String error = "A sintaxe do comando está incorreta.\n";
+        System.out.println(error);
+
+        return error;
+    }
+
+
+    // Retorna um erro de pasta não vazia
+    public static void noEmptyFolder() {
+        String error = "A pasta não está vazia.\n";
+        System.out.println(error);
+
+    }
+
+
+    // Retorna um erro por não poder criar um arquivo
+    public static String fileFail() {
+        String error = "Não foi possível criar o arquivo.\n";
+        System.out.println(error);
+
+        return error;
     }
 }

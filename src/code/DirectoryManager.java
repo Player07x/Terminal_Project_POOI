@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 public class DirectoryManager {
 
     public String actualDir = System.getProperty("user.dir");
+    public String logDir = actualDir + "\\" + "log";
 
     // Exibe uma lista de itens dentro de uma pasta
     public String[] getActualItens(){
@@ -21,6 +22,7 @@ public class DirectoryManager {
         assert allItens != null; // Evita que 'allItens' produza um 'NullPointerException'
         String[] fileString = new String[allItens.length+2];
 
+        // Para cada pasta ou arquivo, exibe e soma ao contador
         for (int i = 0; i < allItens.length; i++) {
             if (allItens[i].isDirectory()) {
 
@@ -35,6 +37,7 @@ public class DirectoryManager {
             }
         }
 
+        // No fim da linha, adiciona a quantidade de arquivos e pastas
         fileString[allItens.length] = String.format("\t%d arquivo(s)", countFiles);
         fileString[allItens.length+1] = String.format("\t%d pasta(s)", countDir);
 
@@ -51,9 +54,20 @@ public class DirectoryManager {
     }
 
 
+    // Verifica a existencia de um arquivo
+    public boolean fileExist(String dir) {
+
+        File file = new File(dir);
+
+        return file.isFile();
+    }
+
+
     // Corrige a formatação de um PATH
     public void fixRealDir() {
+
         Path dir = Paths.get(actualDir);
+
         try {
             actualDir = dir.toRealPath().toString();
         } catch (IOException e) {
@@ -64,6 +78,7 @@ public class DirectoryManager {
 
     // Retorna um ou mais diretórios
     public boolean returnDir(String command) {
+
         int isReturn = 0;
         int isRoot = 0;
         int commandSize = command.length();
@@ -79,6 +94,7 @@ public class DirectoryManager {
                 isReturn++;
             }
 
+            // Verifica se terá casos como "\..."
             if((i == 0 && (commandChar[i] == '/' || commandChar[i] == '\\')
                     || (i != 0 && commandChar[i] == '.'))) {
 
@@ -87,6 +103,7 @@ public class DirectoryManager {
 
         }
 
+        // Se o comando "\." for digitado, ir até ROOT
         if (isRoot == commandChar.length) {
 
             Path root = Paths.get(actualDir);
@@ -94,6 +111,8 @@ public class DirectoryManager {
 
             return true;
         }
+
+        // Se for ".../" voltar o número de "."
         else if (isReturn == commandChar.length) {
 
             // Para cada "." volta um diretório, até o limite do diretório raiz
@@ -114,5 +133,4 @@ public class DirectoryManager {
         }
         return false;
     }
-
 }

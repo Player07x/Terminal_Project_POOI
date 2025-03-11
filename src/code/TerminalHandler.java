@@ -1,5 +1,7 @@
 package code;
 
+import java.util.ArrayList;
+
 public class TerminalHandler extends CommandsHash {
 
     CommandHandler ch;
@@ -30,11 +32,12 @@ public class TerminalHandler extends CommandsHash {
                 Runnable command = this.commandMap.get(line[0]);
                 command.run();
 
-                return ch.output;
+                return ch.output != null ? String.join("\n", ch.output) : "";
             }
             else if (!line[0].trim().isEmpty()) {
                 return ErrorManager.commandNotIdentify(line[0]);
             }
+
         }
 
         return "";

@@ -1,18 +1,48 @@
-## Getting Started
+# Trabalho Final POO I: Terminal
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Trabalho final de Programação Orientada a Objetos I, do curso de Engenharia de Software (4° Período). Projeto desenvolvido pelo aluno João Antonio André Barbosa Camilo.
 
-## Folder Structure
+## Instruções
+1° Passo: Digite um dos comandos abaixo, respeitando a formatação correta.
 
-The workspace contains two folders by default, where:
+- **Comandos suportados:**
+  - `pwd`: Exibe o diretório atual.
+  - `ls`: Lista os arquivos e diretórios no diretório atual.
+  - `cd <diretório>`: Navega para o diretório especificado.
+  - `mkdir <nome>`: Cria um novo diretório.
+  - `touch <arquivo>`: Cria um novo arquivo vazio.
+  - `rm <arquivo/diretório>`: Remove um arquivo ou diretório.
+  - `cat <arquivo>`: Exibe o conteúdo de um arquivo.
+  - `echo <texto> > <arquivo>`: Escreve texto em um arquivo.
+  - `history`: Exibe o histórico de comandos digitados.
+  - `exit`: Encerra o programa.
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+2° Passo: Aperte o "Enter" do seu teclado e o código executará a função escolhida.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Exemplo de Uso
+Aqui está um exemplo de como usar o terminal simulado:
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+```
+D:\Java\Projects\Terminal> ls
+<DIR>    log
+         README.md
+         1 arquivo(s)
+         1 pasta(s)
 
-## Dependency Management
+D:\Java\Projects\Terminal> mkdir nova_pasta
+nova_pasta
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+D:\Java\Projects\Terminal> cd nova_pasta
+D:\Java\Projects\Terminal\nova_pasta> touch arquivo.txt
+arquivo.txt
+
+D:\Java\Projects\Terminal\nova_pasta> echo "Olá, mundo!" > arquivo.txt
+
+D:\Java\Projects\Terminal\nova_pasta> cat arquivo.txt
+"Olá, mundo!"
+
+D:\Java\Projects\Terminal\nova_pasta> exit
+```
+
+## Licença
+Este projeto é de uso livre e pode ser modificado conforme necessário.

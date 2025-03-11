@@ -4,6 +4,7 @@ import java.util.Map;
 
 
 public class CommandsHash {
+
     public Map<String, Runnable> commandMap = new HashMap<>();
     private final CommandHandler cm;
 
@@ -25,5 +26,4 @@ public class CommandsHash {
         commandMap.put("history", cm::history);
         commandMap.put("exit", cm::exit);
     }
-
 }
