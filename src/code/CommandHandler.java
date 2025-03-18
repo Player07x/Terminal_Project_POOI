@@ -50,8 +50,8 @@ public class CommandHandler {
     public void cd() {
 
         if (arguments.length <= 1) {
-            String command = dm.actualDir + "\n\n";
-            System.out.printf(command);
+            String command = dm.actualDir + "\n";
+            System.out.println(command);
             this.output.add(command);
 
             return;
@@ -72,7 +72,6 @@ public class CommandHandler {
         if (dm.dirExist(dir)) {
             dm.actualDir = dir;
             dm.fixRealDir();
-
         }
         // Verifica se o diretório existe e é absoluto
         else if (dm.dirExist(arguments[1])) {
@@ -80,42 +79,64 @@ public class CommandHandler {
             dm.fixRealDir();
         }
         else {
-            this.output.add(ErrorManager.noPath()); // Mensagem de erro
+            String error = ErrorManager.noPath();
+            System.out.println(error);
+            this.output.add(error); // Mensagem de erro
         }
     }
 
 
     // mkdir <nome> → Cria um novo diretório.
     public void mkdir() {
-
         if (arguments.length <= 1) {
+            System.out.println(ErrorManager.sintaxiError());
             this.output.add(ErrorManager.sintaxiError());
             return;
         }
 
-        fm.createFile(arguments[1]);
-        System.out.println(arguments[1] + "\n");
+        // Verifica se o caminho é absoluto ou relativo
+        String path = arguments[1];
+        if (path.contains(":") || path.startsWith("\\")) {
+            // Caminho absoluto
+            fm.createDirectory(path);
+        } else {
+            // Caminho relativo
+            path = dm.actualDir + "\\" + path;
+            fm.createDirectory(path);
+        }
 
+        System.out.println(arguments[1] + "\n");
+        this.output.add(arguments[1] + "\n");
     }
 
 
     // touch <arquivo> → Cria um novo arquivo vazio.
     public void touch() {
         if (arguments.length <= 1) {
-            ErrorManager.sintaxiError();
+            String error = ErrorManager.sintaxiError();
+            System.out.println(error);
+            this.output.add(error);
             return;
         }
 
-        fm.createFile(arguments[1]);
-        System.out.println(arguments[1] + "\n");
+        String result = fm.createFile(arguments[1]);
 
+        if (result.equals(ErrorManager.fileFail())) {
+            System.out.println(result);
+            this.output.add(result);
+
+            return;
+        }
+        System.out.println(arguments[1] + "\n");
+        this.output.add(arguments[1] + "\n");
     }
 
 
     // rm <arquivo/diretório> → Remove um arquivo ou diretório.
     public void rm() {
         if (arguments.length <= 1) {
-            ErrorManager.sintaxiError();
+            String error = ErrorManager.sintaxiError();
+            this.output.add(error);
             return;
         }
 
@@ -127,13 +148,24 @@ public class CommandHandler {
     // cat <arquivo> → Exibe o conteúdo de um arquivo.
     public void cat() {
         if (arguments.length <= 1) {
-            ErrorManager.sintaxiError();
+            String error = ErrorManager.sintaxiError();
+            System.out.println(error);
+            this.output.add(error);
+
             return;
         }
 
         String filePath = dm.actualDir + "\\" + arguments[1];
-        if (dm.fileExist(filePath)) fm.readFile(filePath);
-        else ErrorManager.cantFind(filePath);
+        if (dm.fileExist(filePath)) {
+            String text = fm.readFile(filePath);
+            System.out.println(text);
+            this.output.add(text);
+        }
+        else {
+            String error = ErrorManager.cantFind(filePath);
+            System.out.println(error);
+            this.output.add(error);
+        }
 
     }
 
@@ -156,7 +188,8 @@ public class CommandHandler {
 
         // Se não existir ">", então o código gerará um erro
         if (commandIndex == 0 || (commandIndex) >= arguments.length-1) {
-            ErrorManager.sintaxiError();
+            String error = ErrorManager.sintaxiError();
+            this.output.add(error);
             return;
         }
 
@@ -178,7 +211,9 @@ public class CommandHandler {
     // history → Mostra o histórico de comandos digitados.
     public void history() {
         for (int i = 0; i < historyInput.size(); i++) {
-            System.out.printf("[%d] %s\n", i, historyInput.get(i));
+            String text = String.format("[%d] %s\n", i, historyInput.get(i));
+            System.out.print(text);
+            this.output.add(text);
         }
         System.out.println();
     }

@@ -1,7 +1,5 @@
 package code;
 
-import java.util.ArrayList;
-
 public class TerminalHandler extends CommandsHash {
 
     CommandHandler ch;
@@ -35,7 +33,10 @@ public class TerminalHandler extends CommandsHash {
                 return ch.output != null ? String.join("\n", ch.output) : "";
             }
             else if (!line[0].trim().isEmpty()) {
-                return ErrorManager.commandNotIdentify(line[0]);
+                String error = ErrorManager.commandNotIdentify(line[0]);
+                System.out.println(error);
+
+                return error;
             }
 
         }
